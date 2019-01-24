@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo # The name of the deployment
+spec:
+  replicas: 2 # We want to create 2 identical Pods.
+  selector:
+    matchLabels:
+      app: demo # Tells the deployment which resources it is managing.
+  template: # This is the template for the Pods that will be created.
+    metadata: # We assign labels to the Pods that we create so this deployment knows it is managing them.
+      labels:
+        app: demo
+    spec:
+      containers: # These are the containers to create inside the Pod.
+      # The server container runs a web server on port 5000 that displays the current pod name and how many times the page has been accessed (which is persisted in a file on /mnt/).
+      - name: server
+        image: chrisgavin/k8s-demo-server
+        imagePullPolicy: Always # This says that Kubernetes should always check for new versions of the image when this container is created. It is very useful when developing images.
+        resources:
+          requests: # This container can only be scheduled on a node with 0.05 free CPU cores and 128MiB free memory.
+            cpu: 0.05
+            memory: 128Mi
+          limits: # This container cannot use more than 0.1 CPU core and will be terminated if it uses more than 1024MiB of memory.
+            cpu: 0.1
+            memory: 1024Mi
+      # The client loads the web page from the server every 10 seconds.
+      - name: client
+        image: chrisgavin/k8s-demo-client
+        imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: 0.05
+            memory: 64Mi
+          limits:
+            cpu: 0.1
+            memory: 128Mi
