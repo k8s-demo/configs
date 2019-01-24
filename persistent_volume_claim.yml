@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: server-persistent-volume-claim # The name of the PersistentVolumeClaim.
+  labels:
+    app: demo # We label the PersistentVolumeClaim with the app it is for to make it easier to find all the resources for a single app.
+spec:
+  accessModes:
+  - ReadWriteOnce # We want this volume to be used exclusively by a single Pod.
+  resources:
+    requests:
+      storage: 128Mi # We want the volume to be 128MiB in size.

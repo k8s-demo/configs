@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: demo # The name of the deployment
 spec:
-  replicas: 2 # We want to create 2 identical Pods.
+  replicas: 1 # We only want to create one pod because we can only claim the same volume in read-write mode once.
   selector:
     matchLabels:
       app: demo # Tells the deployment which resources it is managing.
@@ -25,6 +25,9 @@ spec:
           limits: # This container cannot use more than 0.1 CPU core and will be terminated if it uses more than 1024MiB of memory.
             cpu: 0.1
             memory: 1024Mi
+        volumeMounts:
+        - mountPath: /mnt/ # Where to mount the volume.
+          name: server-persistent-storage # The name of the volume to mount.
       # The client loads the web page from the server every 10 seconds.
       - name: client
         image: chrisgavin/k8s-demo-client
@@ -36,3 +39,7 @@ spec:
           limits:
             cpu: 0.1
             memory: 128Mi
+      volumes:
+      - name: server-persistent-storage # The name of the volume.
+        persistentVolumeClaim:
+          claimName: server-persistent-volume-claim # The name of the persistent volume claim we want to use.
