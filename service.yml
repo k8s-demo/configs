@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-service
+spec:
+  type: LoadBalancer # This type of service is accessible from the internet. If you only need other pods in the cluster to have access you can use ClusterIP as the service type instead.
+  selector: # This says which pods traffic should be routed to.
+    app: demo
+  ports: # This is a mapping from ports on the load balancer to ports in the container. It works similarly to Docker's `-p` flag.
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
