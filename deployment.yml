@@ -22,9 +22,6 @@ spec:
           requests: # This container can only be scheduled on a node with 0.05 free CPU cores and 128MiB free memory.
             cpu: 0.05
             memory: 128Mi
-          limits: # This container cannot use more than 0.1 CPU core and will be terminated if it uses more than 1024MiB of memory.
-            cpu: 0.1
-            memory: 1024Mi
       # The client loads the web page from the server every 10 seconds.
       - name: client
         image: chrisgavin/k8s-demo-client

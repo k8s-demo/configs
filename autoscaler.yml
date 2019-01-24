@@ -1,0 +1,13 @@
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler # A HorizontalPodAutoscaler will create more replicas of a Pod when certain conditions are met.
+metadata:
+  name: demo-autoscaler
+spec:
+  scaleTargetRef: # What we want to scale.
+    apiVersion: apps/v1
+    kind: Deployment
+    name: demo
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50 # Scale up when 50% of the CPU resource request is reached.
