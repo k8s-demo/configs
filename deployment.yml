@@ -25,6 +25,9 @@ spec:
           limits: # This container cannot use more than 0.1 CPU core and will be terminated if it uses more than 1024MiB of memory.
             cpu: 0.1
             memory: 1024Mi
+        volumeMounts:
+        - name: demo-secret-volume # The secret volume to mount.
+          mountPath: /secrets/ # Where to mount it.
       # The client loads the web page from the server every 10 seconds.
       - name: client
         image: chrisgavin/k8s-demo-client
@@ -36,3 +39,7 @@ spec:
           limits:
             cpu: 0.1
             memory: 128Mi
+      volumes:
+      - name: demo-secret-volume # The name of the secret volume.
+        secret:
+          secretName: demo-secret # The secret to use for the volume.
